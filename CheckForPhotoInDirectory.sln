@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckForPhotoInDirectory", "CheckForPhotoInDirectory\CheckForPhotoInDirectory.csproj", "{63010BD8-AB6B-4CDD-9DB8-EE4A5A7E5A03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckForPhotoInDirectory.Tests", "CheckForPhotoInDirectory.Tests\CheckForPhotoInDirectory.Tests.csproj", "{B5E4DDB7-8A62-4EA7-9E32-909D6953E880}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63010BD8-AB6B-4CDD-9DB8-EE4A5A7E5A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63010BD8-AB6B-4CDD-9DB8-EE4A5A7E5A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63010BD8-AB6B-4CDD-9DB8-EE4A5A7E5A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63010BD8-AB6B-4CDD-9DB8-EE4A5A7E5A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5E4DDB7-8A62-4EA7-9E32-909D6953E880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5E4DDB7-8A62-4EA7-9E32-909D6953E880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5E4DDB7-8A62-4EA7-9E32-909D6953E880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5E4DDB7-8A62-4EA7-9E32-909D6953E880}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6B58CF9-9EF0-41B5-B7D3-9044896E06AC}
+	EndGlobalSection
+EndGlobal
