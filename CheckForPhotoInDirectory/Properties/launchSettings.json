@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CheckForPhotoInDirectory": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Example\\exampletest"
+    }
+  }
+}
