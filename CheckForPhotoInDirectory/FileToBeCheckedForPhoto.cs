@@ -49,6 +49,24 @@ namespace CheckForPhotoInDirectory
             catch (Exception) { }
             return false;
         }
+        public void checkIfFileIsImage()
+        {
+            try
+            {
+                using (FileStream data = File.OpenRead(this.FileDirectory))
+                {
+                    if (Utilities.CheckIfFileIsImageType(data))
+                    {
+                        this.ContainsPhoto = true;
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+        public override string ToString()
+        {
+            return FileName + " | " + ContainsPhoto;
+        }
 
     }
 }
