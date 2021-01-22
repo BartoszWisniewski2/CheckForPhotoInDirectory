@@ -2,13 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 
 namespace CheckForPhotoInDirectory
 {
     public static class Utilities
     {
-        public static Boolean checkIfFileIsZipArchive(String filePath)
+        private enum FileType
+        {
+            Jpeg,
+            Png
+        }
+
+        private static readonly Dictionary<FileType, byte[]> KNOWN_FILE_HEADERS = new Dictionary<FileType, byte[]>()
+        {
+            { FileType.Jpeg, new byte[]{ 0xFF, 0xD8 }},
+            { FileType.Png, new byte[]{ 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }},
+        };
+
+        public static Boolean CheckIfFileIsZipArchive(String filePath)
         {
             try
             {
@@ -22,24 +35,52 @@ namespace CheckForPhotoInDirectory
             {
                 return false;
             }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Brak pliku w podanej lokalizacji");
+                return false;
+            }
         }
-        public static void unPack(String archivePatch, string extractPath)
+        public static void UnPack(String archivePatch, string extractPath)
         {
-            cleanDirectoryIfFolderExists(extractPath);
+            CleanDirectoryIfFolderExists(extractPath);
             ZipFile.ExtractToDirectory(archivePatch, extractPath);
         }
-        public static void cleanDirectoryIfFolderExists(string extractPath)
+        public static void CleanDirectoryIfFolderExists(string extractPath)
         {
             if (Directory.Exists(extractPath))
             {
                 Directory.Delete(extractPath, recursive: true);
             }
         }
-        public static string[] getListOfAllFilesDirectories(string directoryPath)
+        public static string[] GetListOfAllFilesDirectories(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
             return files;
         }
+        public static List<FileToBeCheckedForPhoto> CreateListOfFileObjects(String[] listOfDirectories)
+        {
+            List<FileToBeCheckedForPhoto> listOfFiles = new List<FileToBeCheckedForPhoto>();
+            foreach (var item in listOfDirectories)
+            {
+                listOfFiles.Add(new FileToBeCheckedForPhoto(item));
+            }
+            return listOfFiles;
+        }
+        public static Boolean GetKnownFileType(Stream data)
+        {
+            foreach (var fileHeader in KNOWN_FILE_HEADERS)
+            {
+                data.Seek(0, SeekOrigin.Begin);
 
+                var slice = new byte[fileHeader.Value.Length];
+                data.Read(slice, 0, fileHeader.Value.Length);
+                if (slice.SequenceEqual(fileHeader.Value))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
