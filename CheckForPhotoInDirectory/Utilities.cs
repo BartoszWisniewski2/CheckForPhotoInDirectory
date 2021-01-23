@@ -15,7 +15,7 @@ namespace CheckForPhotoInDirectory
             Png
         }
 
-        private static readonly Dictionary<FileType, byte[]> KNOWN_FILE_HEADERS = new Dictionary<FileType, byte[]>()
+        private static readonly Dictionary<FileType, byte[]> knownFileHeaders = new Dictionary<FileType, byte[]>()
         {
             { FileType.Jpeg, new byte[]{ 0xFF, 0xD8 }},
             { FileType.Png, new byte[]{ 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }},
@@ -67,14 +67,14 @@ namespace CheckForPhotoInDirectory
             }
             return listOfFiles;
         }
-        public static Boolean GetKnownFileType(Stream data)
+        public static Boolean CheckIfFileIsImageType(FileStream filestream)
         {
-            foreach (var fileHeader in KNOWN_FILE_HEADERS)
+            foreach (var fileHeader in knownFileHeaders)
             {
-                data.Seek(0, SeekOrigin.Begin);
+                filestream.Seek(0, SeekOrigin.Begin);
 
                 var slice = new byte[fileHeader.Value.Length];
-                data.Read(slice, 0, fileHeader.Value.Length);
+                filestream.Read(slice, 0, fileHeader.Value.Length);
                 if (slice.SequenceEqual(fileHeader.Value))
                 {
                     return true;

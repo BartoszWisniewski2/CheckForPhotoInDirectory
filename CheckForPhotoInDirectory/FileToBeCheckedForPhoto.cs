@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using ClosedXML.Excel.Drawings;
+using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using Spire.Doc.Documents;
-using Spire.Doc;
-
 
 namespace CheckForPhotoInDirectory
 {
@@ -20,23 +21,68 @@ namespace CheckForPhotoInDirectory
             FileName = Path.GetFileName(filePath);
             ContainsPhoto = false;
         }
-        //Method to check if doc file contains Image using Spire.Doc
-        public Boolean checkForImageInDocFile()
+        public Boolean CheckForImageInDocFile()
         {
+            List<String> imageFormats = new List<string> { "image/jpeg", "image/png" };
             try
             {
-                Document document = new Document(this.FileDirectory);
+                using (FileStream fileStream = File.Open(this.FileDirectory, FileMode.Open))
                 {
-                    foreach (Section section in document.Sections)
+                    WordprocessingDocument wordprocessingDocument = WordprocessingDocument.Open(fileStream, true);
+                    var images = wordprocessingDocument.MainDocumentPart.ImageParts;
+                    foreach (var image in images)
                     {
-                        //Get Each Paragraph of Section
-                        foreach (Paragraph paragraph in section.Paragraphs)
+                        if (image != null && imageFormats.Contains(image.ContentType))
                         {
-                            //Get Each Document Object of Paragraph Items
-                            foreach (DocumentObject docObject in paragraph.ChildObjects)
+                            this.ContainsPhoto = true;
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception) { }
+            return false;
+        }
+        public Boolean CheckForImageInPowerPointFile()
+        {
+            List<String> imageFormats = new List<string> { "image/jpeg", "image/png" };
+            try
+            {
+                using (FileStream fileStream = File.Open(this.FileDirectory, FileMode.Open))
+                {
+                    PresentationDocument presentationDocument = PresentationDocument.Open(fileStream, true);
+                    PresentationPart presentationPart = presentationDocument.PresentationPart;
+                    foreach (SlidePart slidePart in presentationPart.GetPartsOfType<SlidePart>())
+                    {
+                        ImagePart imagePart = slidePart.GetPartsOfType<ImagePart>().FirstOrDefault();
+                        if (imagePart != null && imageFormats.Contains(imagePart.ContentType))
+                        {
+                            this.ContainsPhoto = true;
+                            return true;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception) { }
+            return false;
+        }
+        public Boolean CheckForImageInSpreadsheetFile()
+        {
+            List<String> imageFormats = new List<string> { "Jpeg", "Png" };
+            try
+            {
+                using (FileStream fileStream = File.Open(this.FileDirectory, FileMode.Open))
+                {
+                    XLWorkbook workbook = new XLWorkbook(fileStream);
+                    IXLWorksheets worksheets = workbook.Worksheets;
+                    foreach (IXLWorksheet worksheet in worksheets)
+                    {
+                        if (worksheet.Pictures.Count() > 0)
+                        {
+                            foreach (IXLPicture picture in worksheet.Pictures)
                             {
-                                //If Type of Document Object is Picture set ContainsPhoto property to true and return true.
-                                if (docObject.DocumentObjectType == DocumentObjectType.Picture)
+                                if (imageFormats.Contains(picture.Format.ToString()))
                                 {
                                     this.ContainsPhoto = true;
                                     return true;
@@ -49,19 +95,22 @@ namespace CheckForPhotoInDirectory
             catch (Exception) { }
             return false;
         }
-        public void checkIfFileIsImage()
+
+        public Boolean CheckIfFileIsImage()
         {
             try
             {
-                using (FileStream data = File.OpenRead(this.FileDirectory))
+                using (FileStream fileStream = File.Open(this.FileDirectory, FileMode.Open))
                 {
-                    if (Utilities.CheckIfFileIsImageType(data))
+                    if (Utilities.CheckIfFileIsImageType(fileStream))
                     {
                         this.ContainsPhoto = true;
+                        return true;
                     }
                 }
             }
             catch (Exception) { }
+            return false;
         }
         public override string ToString()
         {

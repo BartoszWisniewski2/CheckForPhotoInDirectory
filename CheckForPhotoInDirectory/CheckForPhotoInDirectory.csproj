@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Spire.Doc" Version="9.1.0" />
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
   </ItemGroup>
 
 </Project>
