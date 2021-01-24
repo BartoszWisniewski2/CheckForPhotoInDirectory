@@ -23,5 +23,13 @@
   <ItemGroup>
     <ProjectReference Include="..\CheckForPhotoInDirectory\CheckForPhotoInDirectory.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
 
 </Project>

@@ -78,15 +78,16 @@ namespace CheckForPhotoInDirectory
                     IXLWorksheets worksheets = workbook.Worksheets;
                     foreach (IXLWorksheet worksheet in worksheets)
                     {
-                        if (worksheet.Pictures.Count() > 0)
+                        if (!worksheet.Pictures.Any())
                         {
-                            foreach (IXLPicture picture in worksheet.Pictures)
+                            continue;
+                        }
+                        foreach (IXLPicture picture in worksheet.Pictures)
+                        {
+                            if (imageFormats.Contains(picture.Format.ToString()))
                             {
-                                if (imageFormats.Contains(picture.Format.ToString()))
-                                {
-                                    this.ContainsPhoto = true;
-                                    return true;
-                                }
+                                this.ContainsPhoto = true;
+                                return true;
                             }
                         }
                     }
