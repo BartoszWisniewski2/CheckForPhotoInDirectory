@@ -21,6 +21,10 @@ namespace CheckForPhotoInDirectory
             { FileType.Png, new byte[]{ 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }},
         };
 
+        /// <summary>
+        /// Checks if the file is a zip archive
+        /// </summary>
+        /// <param name="filePath">Path to the zip archive</param>
         public static Boolean CheckIfFileIsZipArchive(String filePath)
         {
             try
@@ -41,23 +45,44 @@ namespace CheckForPhotoInDirectory
                 return false;
             }
         }
+        /// <summary>
+        /// Unpacks the zip archive
+        /// </summary>
+        /// <param name="archivePatch">Patch to the zip archive</param>
+        /// <param name="extractPath">Patch where the zip archive should be extracted</param>
         public static void UnPackZipArchive(String archivePatch, string extractPath)
         {
             CleanDirectoryIfFolderExists(extractPath);
             ZipFile.ExtractToDirectory(archivePatch, extractPath);
         }
-        public static void CleanDirectoryIfFolderExists(string extractPath)
+        /// <summary>
+        /// Deletes a directory with all folders and files in it if it exists
+        /// </summary>
+        /// <param name="directoryPath">Directory to the folder</param>
+        public static void CleanDirectoryIfFolderExists(string directoryPath)
         {
-            if (Directory.Exists(extractPath))
+            if (Directory.Exists(directoryPath))
             {
-                Directory.Delete(extractPath, recursive: true);
+                Directory.Delete(directoryPath, recursive: true);
             }
         }
+
+        /// <summary>
+        /// Returns all files in fiven directory and subfolders
+        /// </summary>
+        /// <param name="directoryPath">Directory to be checked for files</param>
+        /// <returns>Table of File Paths</returns>
         public static string[] GetListOfAllFilesInFolderAndSubfolder(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
             return files;
         }
+        
+        /// <summary>
+        /// Creates List of FileToBeCheckedForPhoto class objects
+        /// </summary>
+        /// <param name="listOfDirectories">Table of file paths</param>
+        /// <returns>List of FileToBeCheckedForPhoto objects</returns>
         public static List<FileToBeCheckedForPhoto> CreateListOfFileObjects(String[] listOfDirectories)
         {
             List<FileToBeCheckedForPhoto> listOfFiles = new List<FileToBeCheckedForPhoto>();
@@ -67,6 +92,11 @@ namespace CheckForPhotoInDirectory
             }
             return listOfFiles;
         }
+
+        /// <summary>
+        /// Checks if given file is Jpg or Png Image
+        /// </summary>
+        /// <param name="filestream">Filestream of a file to be checked</param>
         public static Boolean CheckIfFileIsImageType(FileStream filestream)
         {
             foreach (var fileHeader in knownFileHeaders)

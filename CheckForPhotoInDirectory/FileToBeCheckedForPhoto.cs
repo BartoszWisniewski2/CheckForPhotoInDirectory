@@ -21,6 +21,10 @@ namespace CheckForPhotoInDirectory
             FileName = Path.GetFileName(filePath);
             ContainsPhoto = false;
         }
+
+        /// <summary>
+        /// Checks if the file is a Doc document and contains Jpg or Png Image 
+        /// </summary>
         public Boolean CheckForImageInDocFile()
         {
             List<String> imageFormats = new List<string> { "image/jpeg", "image/png" };
@@ -43,6 +47,9 @@ namespace CheckForPhotoInDirectory
             catch (Exception) { }
             return false;
         }
+        /// <summary>
+        /// Checks if the file is a Presentation document and contains Jpg or Png Image on any of the slides 
+        /// </summary>
         public Boolean CheckForImageInPowerPointFile()
         {
             List<String> imageFormats = new List<string> { "image/jpeg", "image/png" };
@@ -67,6 +74,10 @@ namespace CheckForPhotoInDirectory
             catch (Exception) { }
             return false;
         }
+
+        /// <summary>
+        /// Checks if the file is a Spreadsheet document and contains Jpg or Png Image on any of the worksheets 
+        /// </summary>
         public Boolean CheckForImageInSpreadsheetFile()
         {
             List<String> imageFormats = new List<string> { "Jpeg", "Png" };
@@ -97,6 +108,9 @@ namespace CheckForPhotoInDirectory
             return false;
         }
 
+        /// <summary>
+        /// Checks if the file is an Image
+        /// </summary>
         public Boolean CheckIfFileIsImage()
         {
             try
