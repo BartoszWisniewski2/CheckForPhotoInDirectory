@@ -41,7 +41,7 @@ namespace CheckForPhotoInDirectory
                 return false;
             }
         }
-        public static void UnPack(String archivePatch, string extractPath)
+        public static void UnPackZipArchive(String archivePatch, string extractPath)
         {
             CleanDirectoryIfFolderExists(extractPath);
             ZipFile.ExtractToDirectory(archivePatch, extractPath);
@@ -53,7 +53,7 @@ namespace CheckForPhotoInDirectory
                 Directory.Delete(extractPath, recursive: true);
             }
         }
-        public static string[] GetListOfAllFilesDirectories(string directoryPath)
+        public static string[] GetListOfAllFilesInFolderAndSubfolder(string directoryPath)
         {
             string[] files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
             return files;
